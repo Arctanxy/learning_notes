@@ -6,5 +6,9 @@
 
 参考：http://aqibsaeed.github.io/2016-07-07-TensorflowLR/
 
+## 2. tensorflow搭建卷积神经网络
+
+参考：《TensorFlow——实战Google深度学习框架》
+
 
 
