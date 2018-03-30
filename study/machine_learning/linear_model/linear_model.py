@@ -18,7 +18,7 @@ class linear_model(object):
 			loss = y_pred-y 
 			gradient = np.dot(x.transpose(),loss)/x.shape[0]
 			self.theta = self.theta - self.alpha * gradient
-			self.alpha = self.alpha*0.99
+			#self.alpha = self.alpha*0.99
 		self.mse = np.mean([l for l in loss*loss/(y*y)])
 		self.mae = np.mean([l for l in np.abs(loss)/y])
 	def pred(self,x):
