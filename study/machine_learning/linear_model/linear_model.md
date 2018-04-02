@@ -48,3 +48,15 @@
 				根据y的列数进行多线程稀疏矩阵方程求解
 	如果不是：
 		使用scipy中的lstsq()进行最小二乘法求解
+
+
+## 本线性模型思路
+
+1. 按照最简单的批量梯度下降法对(predict-true)^2 进行优化；
+2. 学习率（步长）采用line-search方法确定，保证训练过程收敛。
+
+## 一维搜索（又名线搜索 line-search)
+
+https://blog.csdn.net/qq_39422642/article/details/78826175
+
+**线搜索的参数不是theta而是alpha**
