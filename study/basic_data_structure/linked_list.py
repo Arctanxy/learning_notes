@@ -1,13 +1,13 @@
 #链表节点
 
-class LNode:
+class LNode(object):
 	def __init__(self,elem,next_ = None):
 		self.elem = elem
 		self.next_ = next_
 
-#链表
+#单链表
 
-class LList:
+class LList(object):
 	def __init__(self):
 		self.head_ = None
 	
@@ -82,3 +82,7 @@ class LList:
 			if pred(p.elem):
 				yield p.elem
 			p = p.next_
+
+#循环单链表
+class RLList(object):
+	
