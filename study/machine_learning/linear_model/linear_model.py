@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 FOLDER = 'H:/learning_notes/study/machine_learning/linear_model/'
 
 class linear_regression(object):
-	def __init__(self,max_time=1000,alpha = 1e-3,intercept = False,normalize = True,batch_size = 10):
+	def __init__(self,max_time=1000,alpha = 1.0,intercept = False,normalize = True,batch_size = 10,method = 'matrix'):
 		self.alpha = alpha
 		self.max_time = max_time
 		self.batch_size = batch_size
@@ -16,6 +16,7 @@ class linear_regression(object):
 		self.intercept = intercept
 		self.maes = []
 		self.mses = []
+		self.method = method
 	def fit(self,x,y):
 		'''
 		训练模型
@@ -33,10 +34,16 @@ class linear_regression(object):
 		else:
 			pass
 			
-		self.theta = np.ones(x.shape[1])/100
-		#self.theta = np.array(np.dot(np.mat(np.dot(x.transpose(),x)).I,np.dot(x.transpose(),y)))
+		self.theta = np.ones(x.shape[1])
 		self.theta = self.theta.reshape(self.theta.shape[0],1)
-		self.GradientDescent(x,y)
+		if self.method == 'sgd':
+			self.GradientDescent(x,y)
+		elif self.method == 'matrix':
+			try:
+				self.theta = np.dot(np.mat(np.dot(x.transpose(),x)).I,np.dot(x.transpose(),y))
+				print('accuracy:',self.accuracy(x,y,self.theta,acc='mae'))
+			except:
+				print("请处理非独立特征")
 	
 	def GradientDescent(self,x,y):
 		'''
@@ -50,21 +57,8 @@ class linear_regression(object):
 			y_pred = np.dot(batch_data,self.theta)
 			loss = y_pred - batch_target 
 			gradient = np.dot(batch_data.transpose(),loss)/batch_data.shape[0]
-			#self.alpha = self.line_search(self.accuracy,x,y,self.alpha,gradient)
-			
-			new_theta = self.theta - self.alpha * gradient
-			
-			#一维搜索效果不好，以此代码代之
-			if i <= 20:
-				for j in range(10):
-					if self.accuracy(batch_data,batch_target,self.theta,acc='mse') < self.accuracy(batch_data,batch_target,new_theta,acc='mse'):
-						self.alpha *= 0.5
-						new_theta = self.theta - self.theta * gradient
-
-
-			self.theta = new_theta
-			#print(self.alpha)
-
+			self.line_search(batch_data,batch_target,gradient)
+			self.theta -= self.alpha * gradient
 			#Show
 			self.mse = self.accuracy(x,y,self.theta,acc='mse')
 			self.mae = self.accuracy(x,y,self.theta,acc='mae')
@@ -74,29 +68,15 @@ class linear_regression(object):
 			print(self.mae)
 
 
-	def line_search(self,f,x,y,alpha,gradient):
+	def line_search(self,batch_data,batch_target,gradient,threshold=1e-5,reduction_ratio=0.9):
 		'''
 		一维搜索
+		其中threshold是一个经验参数，范围[0,0.5]
+		reduction是缩小比,范围[0,1]
 		'''
-		theta1 = self.theta
-		theta2 = theta1 - alpha * gradient
-		while True:
-			if f(x,y,theta1) > f(x,y,theta2):
-				theta3 = theta2 - alpha * gradient
-				if f(x,y,theta2) < f(x,y,theta3):
-					dis = (theta1 + theta3)/2
-					best_alpha = np.mean((dis - self.theta)/(gradient+1))
-					return best_alpha
-				elif f(x,y,theta2) >= f(x,y,theta3):
-                	#递推
-					theta1 = theta2
-					theta2 = theta3
-					theta3 -= alpha*gradient
-			elif f(x,y,theta1) < f(x,y,theta2):
-				dis = (theta1 + theta2)/2
-				alpha = alpha / 2
-				theta2 = theta1 - alpha * gradient
-				print(alpha)
+		while self.accuracy(batch_data,batch_target,self.theta - self.alpha * gradient) > self.accuracy(batch_data,batch_target,self.theta) - threshold * self.alpha * np.sum(gradient**2):
+			self.alpha *= reduction_ratio
+
 
 	def accuracy(self,x,y,theta,acc = 'mse'):
 		y_pred = np.dot(x,theta)
@@ -170,6 +150,25 @@ class linear_regression(object):
 		sigma = np.std(dataset,axis=0)
 		return (dataset-mu)/sigma
 
+class Ridge(linear_regression):
+	def __init__(self,lam = 0.2):
+		linear_regression.__init__(self,max_time=1000,alpha = 1.0,intercept = False,normalize = True,batch_size = 10,method = 'matrix')
+		self.lam = lam
+
+	def fit(self,x,y):
+		x,y = self.check_xy(x,y)
+		if self.method == 'matrix':
+			xtx = np.dot(x.transpose(),x)
+			m = xtx.shape[0]
+			Is = np.mat(np.eye(m))
+			f1 = np.mat(xtx + self.lam * Is).I
+			f2 = np.dot(x.transpose(),y)
+			self.theta = np.dot(f1,f2)
+			print(self.theta)
+		else:
+			print("to be continued……")
+		print(self.accuracy(x,y,self.theta,acc='mae'))
+
 #加载sklearn中自带的boston房价数据集
 def read_boston_data():
 	boston = load_boston()
@@ -184,12 +183,13 @@ if __name__ == "__main__":
 	#x = np.array([[1,1],[2,3],[3,4],[2,2],[4,5]])
 	#x = np.array([[1],[2],[4],[2],[5]])
 	#y = np.array([[1],[2],[3],[4],[6]])
-	clf = linear_regression(max_time = 1000,intercept=True,batch_size=1000)
+	#clf = linear_regression(max_time = 1000,intercept=True,batch_size=1000)
+	clf = Ridge(lam=0.2)
 	clf.fit(x,y)
-	clf.learning_curve(accuracy='mae')
+	'''clf.learning_curve(accuracy='mae')
 	y_pred = clf.pred(x)
 	plt.plot(range(len(y)),y,color = 'r')
 	plt.plot(range(len(y)),y_pred,color = 'g')
 	plt.savefig(FOLDER + 'predicted_data.png')
 	plt.show()
-	
+	'''

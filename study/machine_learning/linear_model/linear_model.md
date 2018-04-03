@@ -2,6 +2,9 @@
 
 ## 1. 矩阵运算
 
+	在训练数据各列数据线性独立(或者说训练数据矩阵X列满秩)的前提下，可以使用矩阵形式计算线性回归的系数
+	参考http://bourneli.github.io/linear-algebra/2016/03/03/linear-algebra-04-ATA-inverse.html
+
 
 
 ## 2. 梯度下降
@@ -26,7 +29,7 @@
 
 #### （2） 李普希兹连续
 
-	对于在实数集的函数$f$，若存在常数K，使得$|f(a)-f(b)| <= K|a-b|$，则称$f$符合李普希兹条件，对于$f$最小的常数$K$成为$f$的李普希兹常数，选择$1/K$作为学习步长（学习率）可以保证学习过程收敛。
+	对于在实数集的函数$f$，若存在常数K，使得 $|f(a)-f(b)| <= K|a-b|$ ，则称$f$符合李普希兹条件，对于$f$最小的常数$K$成为$f$的李普希兹常数，选择$1/K$作为学习步长（学习率）可以保证学习过程收敛。
 
 很明显，用梯度下降训练线性回归模型不如矩阵算法简单易用。但是上面的矩阵算法的训练效果不如scikitlearn的linear_regression()效果好，scikitlearn是如何做到的呢？下面跟我一起来看一下scikitlearn中的linear_regression()源码。
 
@@ -88,3 +91,6 @@
 https://blog.csdn.net/qq_39422642/article/details/78826175
 
 **线搜索的参数不是theta而是alpha**
+
+
+ridge和lasso模型的实现可以参考http://python.jobbole.com/88799/
