@@ -2,11 +2,16 @@
 
 ## 1. 矩阵运算
 
-	在训练数据各列数据线性独立(或者说训练数据矩阵X列满秩)的前提下，可以使用矩阵形式计算线性回归的系数
+	在训练数据
+	（1）各列数据线性独立
+	（2）样本数量多于特征数量
+	的前提下，可以使用矩阵形式计算线性回归的系数
 	参考http://bourneli.github.io/linear-algebra/2016/03/03/linear-algebra-04-ATA-inverse.html
 
-
-
+$$ Xw = Y $$
+$$ X^TXw = X^TY$$
+$$ w = (X^TX)^{-1}X^TY$$
+	公式就这么简单。
 ## 2. 梯度下降
 
 ### 步长的确定
@@ -26,6 +31,7 @@
 	本文中使用的是backtracking line search。参考https://blog.csdn.net/u014791046/article/details/50831017
 	http://www.hanlongfei.com/%E5%87%B8%E4%BC%98%E5%8C%96/2015/09/29/cmu-10725-gradient/
 
+	**但是添加了line-search之后也只是能保证收敛而已，至于收敛到什么位置，还是比较随缘**
 
 #### （2） 李普希兹连续
 
@@ -34,6 +40,8 @@
 很明显，用梯度下降训练线性回归模型不如矩阵算法简单易用。但是上面的矩阵算法的训练效果不如scikitlearn的linear_regression()效果好，scikitlearn是如何做到的呢？下面跟我一起来看一下scikitlearn中的linear_regression()源码。
 
 ## 3. sklearn线性回归代码分析
+
+# sklearn有可能是可选的加权线性回归，代码还没看完，待确定
 
 ### sklearn中的linear_regression()的思路
 
@@ -52,7 +60,7 @@
 		x中如果有object类型，要想办法转换成数值，转换失败的话要抛出错误；
 		x是否是二维矩阵型数据等
 2. 查看sample_weight的初始值是否符合要求
-	sample_weight是一维数组或者是一个标量
+	sample_weight是一维数组或者是一个标量,sample_weights是样本权重，默认为None即每个样本带有均等的权重。
 3. 数据预处理
 	主要是进行中心化，正态化，
 	如果是无截距训练的话，无需进行中心化，但是正态化还是必须的。
@@ -94,3 +102,51 @@ https://blog.csdn.net/qq_39422642/article/details/78826175
 
 
 ridge和lasso模型的实现可以参考http://python.jobbole.com/88799/
+以及http://f.dataguru.cn/thread-598486-1-1.html
+
+
+## 岭回归的矩阵运算推导
+
+在进行推导之前，需要先了解有关矩阵的迹和矩阵微分的内容
+
+### 矩阵的迹：
+	$tr(A)$，表示$n*n$矩阵A的对角线元素之和
+
+### 矩阵范数
+
+矩阵的L2范数$||A||^2_2 = \lambda$，其中$\lambda$是矩阵$A^TA$的最大特征值。
+
+因此，对于一维向量而言就有$||a||^2_2 = a^Ta$，因为$a^Ta$是一个标量，所以$a^Ta$的值就是其最大特征值。
+
+### 矩阵微分
+
+
+(矩阵微分公式参考 https://blog.csdn.net/u010976453/article/details/54381248)
+
+
+目标：$F = min(||Y-XW||^2_2 + \lambda||W||^2_2)$
+
+$$ F = (Y-XW)^T(Y-XW) + \lambda W^TW$$
+
+$$ F = (Y^T - W^TX^T)(Y-XW) + \lambda W^TW$$
+
+$$ F = Y^TY - Y^TXW - W^TX^TY + W^TX^TXW + \lambda W^TW$$
+
+对F进行求导得到：
+
+
+
+$$ \frac{\partial F}{\partial W} = - Y^TX - Y^TX + (X^TX + X^TX)W + \lambda W$$
+
+$$ \frac{\partial F}{\partial W} = -2 Y^TX + 2X^TXW + \lambda W$$
+
+令$\frac{\partial F}{\partial W} = 0$，有：
+
+$$\frac{\partial F}{\partial W} = -2 Y^TX + 2X^TXW + \lambda W = 0$$
+
+$$(X^TX + \frac{\lambda I}{2})W = Y^TX$$
+
+$$W = (X^TX + \frac{\lambda I}{2})^{-1}Y^TX$$
+
+推导地址： https://blog.csdn.net/computerme/article/details/50486937
+
