@@ -168,7 +168,9 @@ class Ridge(linear_regression):
 		else:
 			print("to be continued……")
 		print(self.accuracy(x,y,self.theta,acc='mae'))
-
+	def predict(self,x):
+		return np.array(np.dot(x,self.theta).transpose())[0]
+		
 #加载sklearn中自带的boston房价数据集
 def read_boston_data():
 	boston = load_boston()

@@ -59,6 +59,17 @@ class RandomLasso(object):
         feature_importance['feature_importance'] = np.mean(feature_importance.drop('index',axis=1),axis=1)
         return feature_importance#['feature_importance'].values
 
+    def second_bootstrap(self,x,y,feature_importance):
+        pass
+    
+    def second_fit(self,x,y):
+        pass
+    
+    def fit(self,x,y):
+        pass
+
+    def predict(self,x):
+        pass
 
 if __name__ == "__main__":
     clf = RandomLasso(n_models=100)

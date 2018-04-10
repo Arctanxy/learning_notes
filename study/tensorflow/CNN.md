@@ -17,3 +17,6 @@
 - 基于WordNet，将1500万图片关联到了WordNet中的约20000个名词同义词集合上（待研究）。
 - 官网地址：http://www.image-net.org/challenges/LSVRC
 
+### Kaggle Google_furniture_image
+
+来自Kaggle的比赛，带有标签，可以用于图片分类训练
