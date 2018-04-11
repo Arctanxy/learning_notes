@@ -13,6 +13,7 @@ class AdaptiveLasso(object):
     def __init__(self,alpha = 1e-5,iterations = 5):
         self.alpha = alpha
         self.iterations = iterations
+        self.weights = None
 
     def fit(self,x,y):
         g = lambda w: np.sqrt(np.abs(w))
@@ -22,22 +23,29 @@ class AdaptiveLasso(object):
 
         p_obj = lambda w:1./(2.*n_samples) * np.sum((y-np.dot(x,w))**2) + self.alpha * np.sum(g(w))#误差项
         
-        weights = np.ones(n_features)
+        self.weights = np.ones(n_features)
 
         for i in range(self.iterations):
-            x_w = x/weights[np.newaxis,:]
+            x_w = x/self.weights[np.newaxis,:]
             clf = Lasso(alpha=self.alpha,fit_intercept=False)
             clf.fit(x_w,y)
-            coef_ = clf.coef_/weights
-            weights = gprime(coef_)
-            print(p_obj(coef_))
+            coef_ = clf.coef_/self.weights
+            self.weights = gprime(coef_)
+            if i == self.iterations - 1:
+                self.weights = coef_
 
     def predict(self,x):
-        return np.dot(x,w)
+        self.weights = np.reshape(self.weights,(len(self.weights),1))
+        return np.dot(x,self.weights)
 
 if __name__ == '__main__':
-    x,y = make_regression(n_samples=100,n_features = 10)
+    import matplotlib.pyplot as plt 
+    x,y = make_regression(n_samples=10,n_features = 10)
 
     
-    Ada_clf = AdaptiveLasso()
+    Ada_clf = AdaptiveLasso(iterations=100)
     Ada_clf.fit(x,y)
+    y_pred = Ada_clf.predict(x)
+    plt.plot(range(len(y)),y_pred,color = 'red')
+    plt.plot(range(len(y)),y,color = 'green')
+    plt.show()
