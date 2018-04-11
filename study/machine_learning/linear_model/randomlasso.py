@@ -121,7 +121,7 @@ def read_boston_data():
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt 
-    clf = RandomLasso(n_models=10,variable_size=0.9)
+    clf = RandomLasso(n_models=2000,variable_size=0.9)
     x,y = read_boston_data()
     #x,y = make_regression(n_samples=100,n_features = 15)
     clf.fit(x,y)
