@@ -164,7 +164,6 @@ class Ridge(linear_regression):
 			f1 = np.mat(xtx + self.lam * Is).I
 			f2 = np.dot(x.transpose(),y)
 			self.theta = np.dot(f1,f2)
-			print(self.theta)
 		else:
 			print("to be continued……")
 		print(self.accuracy(x,y,self.theta,acc='mae'))

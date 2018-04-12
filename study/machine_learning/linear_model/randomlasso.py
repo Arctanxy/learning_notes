@@ -1,5 +1,9 @@
 '''
 利用Lasso和Adaptive Lasso建立模型
+
+目前效果一般，不如单纯的Lasso，但是比adaptive lasso效果要好一点
+尚未实现功能：
+    1. 使用袋外数据验证每个基础模型，然后使用得到的准确率作为权重，用于计算最后的系数的加权平均值
 '''
 from scipy.sparse import coo_matrix
 from sklearn.utils import resample
@@ -85,7 +89,7 @@ class RandomLasso(object):
         feature_importance['feature_importance'] = np.mean(feature_importance.drop('index',axis=1),axis=1)
         return feature_importance['feature_importance'].values
 
-    def second_fit(self,x,y,feature_importance):
+    def second_fit(self,x,y,feature_importance,method = 'AdaptiveLasso'):
         '''
         第二次自助取样，根据特征权重来选择
         '''
@@ -95,10 +99,18 @@ class RandomLasso(object):
         for i in range(len(sample_list)):
             sample = sample_list[i]
             variables = self.variables[i]
-            clf = AdaptiveLasso()
-            clf.fit(sample['x'],sample['y'])
-            new_feature_importances = pd.DataFrame({'index':variables,'weight%d' % i:clf.weights})
-            f_importance = pd.merge(f_importance,new_feature_importances,how='left') 
+            if method == 'AdaptiveLasso':
+                clf = AdaptiveLasso()
+                clf.fit(sample['x'],sample['y'])
+                new_feature_importances = pd.DataFrame({'index':variables,'weight%d' % i:clf.weights})
+            elif method == 'Lasso':
+                clf = Lasso(fit_intercept=False)
+                clf.fit(sample['x'],sample['y'])
+                new_feature_importances = pd.DataFrame({'index':variables,'weight%d' % i:clf.coef_})
+            else:
+                raise Exception("Wrong Method!!!!")
+                
+            f_importance = pd.merge(f_importance,new_feature_importances,how='left')
             self.models.append(clf)
         f_importance = f_importance.fillna(0)
         f_importance['feature_importance'] = np.mean(f_importance.drop('index',axis=1),axis=1)
@@ -107,8 +119,8 @@ class RandomLasso(object):
     def fit(self,x,y):
         feature_importance = self.first_fit(x,y)
         
-        self.coef_ = self.second_fit(x,y,feature_importance)
-
+        self.coef_ = self.second_fit(x,y,feature_importance,method = 'Lasso')
+        print(self.coef_)
     def predict(self,x):
         return np.dot(x,self.coef_)
 
@@ -121,7 +133,7 @@ def read_boston_data():
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt 
-    clf = RandomLasso(n_models=2000,variable_size=0.9)
+    clf = RandomLasso(n_models=50,variable_size=0.9)
     x,y = read_boston_data()
     #x,y = make_regression(n_samples=100,n_features = 15)
     clf.fit(x,y)
