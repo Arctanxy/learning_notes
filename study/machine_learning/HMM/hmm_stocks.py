@@ -13,16 +13,21 @@ data = ts.get_hist_data('600848',start='2010-01-01',end='2017-12-31')
 print(data.info())
 close_v = data['close'].values
 dates = np.array([i for i in range(data.shape[0])])
-volume = data['volume'].values[1:]
+volume = data['volume'].values
 
 diff = np.diff(close_v)#要训练的是收盘价格的变化值
 dates = dates[1:]
 close_v = close_v[1:]
+volume = volume[1:]
+
+plt.plot(close_v,color = 'blue')
+plt.show()
+plt.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
 
 X = np.column_stack([diff,volume])
 print(X)
 diff = diff.reshape(-1,1)
-model = GaussianHMM(n_components=2,covariance_type="diag",n_iter=1000)
+model = GaussianHMM(n_components=2,n_iter=1000)#covariance_type="diag"为默认参数
 model.fit(diff)
 
 hidden_states = model.predict(diff)
@@ -42,3 +47,4 @@ for j in range(len(close_v)-1):
             plt.plot([dates[j],dates[j+1]],[close_v[j],close_v[j+1]],color = colors[i])
 
 plt.show()
+plt.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
