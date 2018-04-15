@@ -70,7 +70,8 @@ plt.show()
 fig1.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
 ```
 股票数据如下图所示：
-![股票趋势图](learning_notes/study/machine_learning/HMM/stocks.jpg)
+
+![股票趋势图](https://github.com/Arctanxy/learning_notes/blob/master/study/machine_learning/HMM/stocks.jpg?raw=true)
 ### 2. 处理数据
 
 接下来需要将收盘价格转换成涨跌幅数据。
@@ -105,7 +106,7 @@ fig2.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
 ```
 不同时刻的状态如下图所示，明显能看出该股票被分成了震荡与剧烈涨跌两种状态：
 
-![股票状态图](learning_notes/study/machine_learning/HMM/hidden_states.jpg)
+![股票状态图](https://github.com/Arctanxy/learning_notes/blob/master/study/machine_learning/HMM/hidden_states.jpg?raw=true)
 
 完整代码：
 [HMM分析股票数据](https://github.com/Arctanxy/learning_notes/blob/master/study/machine_learning/HMM/hmm_stocks.py)
