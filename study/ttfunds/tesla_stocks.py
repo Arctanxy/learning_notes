@@ -10,7 +10,7 @@ WINDOW_SIZE = 7
 HIDDEN_LAYER = 256
 CLIP_MARGIN = 4
 LEARNING_RATE = 0.001
-EPOCHS = 2
+EPOCHS = 100
 
 def get_data():
     '''
@@ -140,10 +140,11 @@ if __name__ == "__main__":
             tests_new.append(tests[i][0][j])
     
     tests_new = np.squeeze(tests_new)
-    #添加空白数据，便于绘图
-    
+    print(len(data),len(tests_new))
     print(tests_new)
+    fig = plt.figure()
     plt.plot(range(len(data)),data,color = 'r')
     plt.plot(range(len(data)-len(tests_new),len(data)),tests_new,color = 'g')
     plt.show()
+    fig.savefig("H:/learning_notes/study/ttfunds/prediction.jpg")
 
