@@ -141,10 +141,9 @@ if __name__ == "__main__":
     
     tests_new = np.squeeze(tests_new)
     #添加空白数据，便于绘图
-    empty_data = [0 for i in range(len(data)-len(tests_new))]
-    tests_new = list(empty_data).extend(list(tests_new))
+    
     print(tests_new)
-    plt.plot(data,color = 'r')
-    plt.plot(tests_new,color = 'g')
+    plt.plot(range(len(data)),data,color = 'r')
+    plt.plot(range(len(data)-len(tests_new),len(data)),tests_new,color = 'g')
     plt.show()
 
