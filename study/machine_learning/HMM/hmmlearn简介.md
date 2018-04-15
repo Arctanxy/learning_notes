@@ -64,12 +64,13 @@ data = ts.get_hist_data('600848',start = '2010-01-01',end='2017-12-31')
 close_v = data['close'].values#当日收盘价格
 volume = data['volume'].values#当日交易量
 dates = np.array([i for i in range(data.shape[0])])#懒得处理日期了，这里直接使用阿拉伯数字代替日期
+fig1 = plt.figure()
 plt.plot(close_v,color = 'blue')
 plt.show()
-plt.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
+fig1.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
 ```
 股票数据如下图所示：
-
+![股票趋势图](learning_notes/study/machine_learning/HMM/stocks.jpg)
 ### 2. 处理数据
 
 接下来需要将收盘价格转换成涨跌幅数据。
@@ -92,18 +93,19 @@ hidden_states = model.predict(diff)#估计状态序列————解码问题
 ```
 
 ### 4. 绘制股票的不同状态
-
 ```python
+fig2 = plt.figure()
 for j in range(len(close_v)-1):
     for i in range(model.n_components):
         if hidden_states[j] == i:
             plt.plot([dates[j],dates[j+1]],[close_v[j],close_v[j+1]],color = colors[i])
 
 plt.show()
-plt.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
+fig2.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
 ```
 不同时刻的状态如下图所示，明显能看出该股票被分成了震荡与剧烈涨跌两种状态：
 
-
+![股票状态图](learning_notes/study/machine_learning/HMM/hidden_states.jpg)
 
 完整代码：
+[HMM分析股票数据](https://github.com/Arctanxy/learning_notes/blob/master/study/machine_learning/HMM/hmm_stocks.py)

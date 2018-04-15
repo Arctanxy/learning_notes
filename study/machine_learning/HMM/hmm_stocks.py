@@ -20,9 +20,10 @@ dates = dates[1:]
 close_v = close_v[1:]
 volume = volume[1:]
 
+fig1 = plt.figure()
 plt.plot(close_v,color = 'blue')
 plt.show()
-plt.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
+fig1.savefig("H:/learning_notes/study/machine_learning/HMM/stocks.jpg")
 
 X = np.column_stack([diff,volume])
 print(X)
@@ -41,10 +42,12 @@ for i in range(model.n_components):
 
 colors = ['r','g','b','y']
 
+fig2 = plt.figure()
+
 for j in range(len(close_v)-1):
     for i in range(model.n_components):
         if hidden_states[j] == i:
             plt.plot([dates[j],dates[j+1]],[close_v[j],close_v[j+1]],color = colors[i])
 
 plt.show()
-plt.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
+fig2.savefig("H:/learning_notes/study/machine_learning/HMM/hidden_states.jpg")
