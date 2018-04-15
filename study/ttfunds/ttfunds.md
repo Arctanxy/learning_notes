@@ -6,17 +6,17 @@
 
 首先介绍一下序列问题，常见的机器学习问题都是是一对一的模型，如下图所示：
 
-[一对一模型](https://cdn-images-1.medium.com/max/1600/0*7AIMLPm1e7hgGolz.)
+![一对一模型](https://cdn-images-1.medium.com/max/1600/0*7AIMLPm1e7hgGolz.)
 
 在这个例子中，我们将一个输入数据传入到模型中，然后模型会根据传入数据生成一个结果，像线性回归，分类问题甚至图像分类卷积神经网络都属于这种类型。
 
 这种模式经过修改可以用于处理一对多模型，如下图所示，模型的输出数据会作为新的输入数据传入回神经网络中，从而产生一系列的值，这种神经网络叫做循环神经网络。
 
-[循环神经网络](https://cdn-images-1.medium.com/max/1600/0*QFWZFOLMH4EyyZxu.)
+![循环神经网络](https://cdn-images-1.medium.com/max/1600/0*QFWZFOLMH4EyyZxu.)
 
 对于序列型的输入数据，循环神经网络的工作方式如下图所示，每个循环网络神经元的输出都会进入下一个神经元，作为下一个神经元的一部分输入数据：
 
-[循环神经网络处理序列问题](https://cdn-images-1.medium.com/max/1600/0*x1vmPLhmSow0kzvK.)
+![循环神经网络处理序列问题](https://cdn-images-1.medium.com/max/1600/0*x1vmPLhmSow0kzvK.)
 
 上面的网络中的每个神经元都使用同一个公式：
 
@@ -32,7 +32,7 @@ $$Y_t = tanh(wY_{t-1} + ux_t)$$
 
 在上世纪九十年代，[Sepp Hochreiter和Jurgen Schmidhuber](http://www.mitpressjournals.org/doi/abs/10.1162/neco.1997.9.8.1735)提出了LSTM神经网络，解决了传统的循环神经网络、隐马尔可夫模型和其他序列模型对长时间跨度不敏感的问题。
 
-[LSTM神经元内部结构](https://cdn-images-1.medium.com/max/800/0*_rC7UKSazzfOkpFZ.)
+![LSTM神经元内部结构](https://cdn-images-1.medium.com/max/800/0*_rC7UKSazzfOkpFZ.)
 
 LSTM神经元在传统循环神经网络中添加了一些逻辑门，它们的功能如下：
 ### 1. 遗忘门
@@ -75,7 +75,7 @@ $$h_t = O_t * tanh(C_t)$$
 
 将使用的数据是美元与印度卢比的在1980年1月2日到2017年8月10日这段时间内的汇率，共有13730条数据，图像如下：
 
-[汇率变化](https://cdn-images-1.medium.com/max/800/0*UYHLdtUFPTM7YPs6.)
+![汇率变化](https://cdn-images-1.medium.com/max/800/0*UYHLdtUFPTM7YPs6.)
 
 ## 模型搭建
 
@@ -83,112 +83,33 @@ $$h_t = O_t * tanh(C_t)$$
 
 以1980/1/2到2009/12/31期间为训练数据，2010/1/1到2017/8/10期间为测试数据。
 
-[数据划分](https://cdn-images-1.medium.com/max/800/0*jXH_D2Zd8TOmXa1H.)
+![数据划分](https://cdn-images-1.medium.com/max/800/0*jXH_D2Zd8TOmXa1H.)
 
 分组之前要对数据进行归一化。
 
 ### 尝试全连接神经网络
 
+所搭建的模型详情如下：
+![模型简介](https://cdn-images-1.medium.com/max/1600/0*u3xLjEmM4m-0Ucjr.)
+
+迭代200遍之后的预测结果如图所示：
+
+![预测结果](https://cdn-images-1.medium.com/max/1200/0*6-fJhYPOGwCzGEs7.)
+
+很明显预测结果与实际情况有较大的偏差。
 
 ### 使用LSTM神经网络预测
 
-#### 导入需要用到到库
+接下来改用LSTM神经网络进行建模。模型详情如下：
+![模型简介](https://cdn-images-1.medium.com/max/1600/0*fDevZBB0iBwHtlIw.)
 
-```python
-import tensorflow as tf
-import numpy as np 
-import pandas as pd 
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-```
-#### 步骤一、加载数据并进行归一化
-```python
-data = pd.read_csv('data.csv')
-scaler = StandardScaler()
-scaled_data = scaler.fit_transform(data['Close'].values,reshape(-1,1))
-```
-#### 使用滑窗法切割数据集
-```python
-def window_data(data,window_size):
-    x = []
-    y = []
-    i = 0
-    while (i+window_size) <= len(data) -1:
-        X.append(data[i:i+window_size])
-        y.append(data[i+window_size])#使用window_size个数据预测后面的一个数据
-        i += 1
-    assert len(X) == len(y)
-    return X,y
-X,y = window_data(scaled_data,7)
+![预测结果](https://cdn-images-1.medium.com/max/1200/1*ysQ--yj7je3GReiiX5knBg.png)
 
-X_train  = np.array(X[:700])
-y_train = np.array(y[:700])
+结果与实际曲线基本吻合，表明LSTM神经网络有应用于汇率预测的前景。
 
-X_test = np.array(X[700:])
-y_test = np.array(y[700:])
-```
+## 结论
 
-#### 设置神经网络参数
-
-```python
-#模型参数
-batch_size = 7#每次传入的样本数量
-window_size = 7#滑窗法的窗口大小
-hidden_layer = 256#神经元数量
-clip_margin = 4#为防止梯度爆炸而采用的clipper的参数
-learning_rate = 0.001#步长
-epochs = 200#训练次数
-
-#定义输入输出
-inputs = tf.placeholder(tf.float32,[batch_size,window_size,1])
-targets = tf.placeholder(tf.float32,[batch_size,1])
-
-#定义权重和偏置
-# LSTM weights
-#Weights for the input gate
-weights_input_gate = tf.Variable(tf.truncated_normal([1, hidden_layer], stddev=0.05))
-weights_input_hidden = tf.Variable(tf.truncated_normal([hidden_layer, hidden_layer], stddev=0.05))
-bias_input = tf.Variable(tf.zeros([hidden_layer]))
-
-#遗忘门权重
-weights_forget_gate = tf.Variable(tf.truncated_normal([1, hidden_layer], stddev=0.05))
-weights_forget_hidden = tf.Variable(tf.truncated_normal([hidden_layer, hidden_layer], stddev=0.05))
-bias_forget = tf.Variable(tf.zeros([hidden_layer]))
-
-#输出门权重
-weights_output_gate = tf.Variable(tf.truncated_normal([1, hidden_layer], stddev=0.05))
-weights_output_hidden = tf.Variable(tf.truncated_normal([hidden_layer, hidden_layer], stddev=0.05))
-bias_output = tf.Variable(tf.zeros([hidden_layer]))
-
-#记忆单元权重
-weights_memory_cell = tf.Variable(tf.truncated_normal([1, hidden_layer], stddev=0.05))
-weights_memory_cell_hidden = tf.Variable(tf.truncated_normal([hidden_layer, hidden_layer], stddev=0.05))
-bias_memory_cell = tf.Variable(tf.zeros([hidden_layer]))
-
-#输出层权重
-weights_output = tf.Variable(tf.truncated_normal([hidden_layer, 1], stddev=0.05))
-bias_output_layer = tf.Variable(tf.zeros([1]))
-```
-#### 定义神经元
-
-```python
-def LSTM_cell(input, output, state):
-    
-    input_gate = tf.sigmoid(tf.matmul(input, weights_input_gate) + tf.matmul(output, weights_input_hidden) + bias_input)
-    
-    forget_gate = tf.sigmoid(tf.matmul(input, weights_forget_gate) + tf.matmul(output, weights_forget_hidden) + bias_forget)
-    
-    output_gate = tf.sigmoid(tf.matmul(input, weights_output_gate) + tf.matmul(output, weights_output_hidden) + bias_output)
-    
-    memory_cell = tf.tanh(tf.matmul(input, weights_memory_cell) + tf.matmul(output, weights_memory_cell_hidden) + bias_memory_cell)
-    
-    state = state * forget_gate + input_gate * memory_cell
-    
-    output = output_gate * tf.tanh(state)
-    return state, output
-```
-
-
+LSTM模型在处理有时间依赖的序列数据时能获得较好的效果，常用于语音识别，音乐分析，手写识别，甚至人类行为分析，是一种拥有记忆能力，能模拟人类决策方式的模型。
 
 原文地址：
 https://blog.statsbot.co/time-series-prediction-using-recurrent-neural-networks-lstms-807fa6ca7f
