@@ -1,3 +1,28 @@
+# 朴素贝叶斯算法
+
+## 算法
+
+### 贝叶斯定理
+
+贝叶斯定理的公式很简单：$P(A|B) = \frac{P(B|A)* P(A)}{P(B)}$。常用于解决分类问题。
+
+### 朴素贝叶斯
+
+中文名比较好听，叫朴素贝叶斯，英文叫Naive Bayes，Naive是什么意思大家都知道，朴素贝叶斯的朴素就体现在它假设所有的属性（即特征）之间相互独立，这一假设可以表述为：
+
+$$P(X|Y=y) = \prod_{i=1}^{d} P(X_i|Y = y)$$
+
+这一以来，前面的贝叶斯定理就可以表述为：
+
+$$P(Y|X) = \frac{P(Y)\prod_{i=1}^{d}P(X_i|Y)}{P(X)}$$
+
+使$P(Y|X)$最大的类别Y就是样本X所属的类别。
+
+而对于每个样本来说，$P(X)$是不随标签$Y_i$改变的，所以，只需比较$P(Y)\prod_{i=1}^{d}P(X_i|Y)$就可以了
+
+## Python代码实现
+
+```python
 '''
 朴素贝叶斯模型
 '''
@@ -119,8 +144,10 @@ if __name__ == "__main__":
     x,y = load_data()
     x_train,x_test,y_train,y_test = train_test_split(x,y,test_size = 0.5,random_state = 100)
     clf = NBClassifier()
-
     clf.fit(x_train,y_train)
-    
     score = clf.score(x_test,y_test)
     print('test score',score)
+
+```
+
+

@@ -5,8 +5,9 @@ import pandas as pd
 import matplotlib.pyplot as plt 
 from sklearn.preprocessing import StandardScaler
 
-BATCH_SIZE = 7
-WINDOW_SIZE = 7
+#定义一些必须的参数
+BATCH_SIZE = 7#模型每批次训练所接受的数据量
+WINDOW_SIZE = 7#滑窗法切割
 HIDDEN_LAYER = 256
 CLIP_MARGIN = 4
 LEARNING_RATE = 0.001
@@ -26,7 +27,7 @@ def get_data():
 
 def window_data(data,window_size):
     '''
-    切割数据
+    切割数据，长度比x:y = 7:1
     '''
     x = []
     y = []
