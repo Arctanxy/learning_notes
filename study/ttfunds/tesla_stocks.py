@@ -54,7 +54,7 @@ def LSTM_cell(input,output,state):
     定义LSTM神经元
     '''
     #输入门
-    weights_input_gate = tf.Variable(tf.truncated_normal([1,HIDDEN_LAYER],stddev=0.05))
+    weights_input_gate = tf.Variable(tf.truncated_normal([1,HIDDEN_LAYER],stddev=0.05))#tf.truncated_normal用于生成一定维度的正态分布数据
     weights_input_hidden = tf.Variable(tf.truncated_normal([HIDDEN_LAYER,HIDDEN_LAYER],stddev=0.05))
     bias_input = tf.Variable(tf.zeros([HIDDEN_LAYER]))
 
@@ -106,8 +106,8 @@ if __name__ == "__main__":
         losses.append(tf.losses.mean_squared_error(tf.reshape(targets[i],(-1,1)),outputs[i]))
     loss = tf.reduce_mean(losses)
     #定义优化器
-    gradients = tf.gradients(loss,tf.trainable_variables())
-    clipped,_ = tf.clip_by_global_norm(gradients,CLIP_MARGIN)
+    gradients = tf.gradients(loss,tf.trainable_variables())#计算梯度
+    clipped,_ = tf.clip_by_global_norm(gradients,CLIP_MARGIN)#让梯度控制在一定范围内，防止梯度消失或者梯度爆炸
     optimizer = tf.train.AdamOptimizer(LEARNING_RATE)
     trained_optimizer = optimizer.apply_gradients(zip(gradients,tf.trainable_variables()))
 
