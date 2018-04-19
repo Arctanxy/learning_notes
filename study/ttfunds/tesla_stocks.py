@@ -8,10 +8,10 @@ from sklearn.preprocessing import StandardScaler
 #定义一些必须的参数
 BATCH_SIZE = 7#模型每批次训练所接受的数据量
 WINDOW_SIZE = 7#滑窗法切割
-HIDDEN_LAYER = 256
-CLIP_MARGIN = 4
-LEARNING_RATE = 0.001
-EPOCHS = 100
+HIDDEN_LAYER = 256#隐藏层层数
+CLIP_MARGIN = 4#用于控制梯度范围的参数
+LEARNING_RATE = 0.001#步长
+EPOCHS = 100#迭代次数
 
 def get_data():
     '''
@@ -121,6 +121,7 @@ if __name__ == "__main__":
         while (j+BATCH_SIZE) <= len(x_train):
             x_batch = x_train[j:j+BATCH_SIZE]
             y_batch = y_train[j:j+BATCH_SIZE]
+            #c为cost，o为output
             o,c,_ = sess.run([outputs,loss,trained_optimizer],feed_dict={inputs:x_batch,targets:y_batch})
             epoch_loss.append(c)
             trained_scores.append(o)
@@ -128,18 +129,19 @@ if __name__ == "__main__":
         
         if (i%30) == 0:
             print("Loss:{}".format(np.mean(epoch_loss)))
-        
+    #测试
     tests = []
     i = 0
     while i+BATCH_SIZE <= len(x_test):
         o = sess.run([outputs],feed_dict={inputs:x_test[i:i+BATCH_SIZE]})
         i += BATCH_SIZE
         tests.append(o)
+    #因为得到的预测数据是一格一格的滑窗数据，有很多重复数据，需要进行处理
     tests_new = []
     for i in range(len(tests)):
         for j in range(len(tests[i][0])):
             tests_new.append(tests[i][0][j])
-    
+    #将结果一维化
     tests_new = np.squeeze(tests_new)
     print(len(data),len(tests_new))
     print(tests_new)
