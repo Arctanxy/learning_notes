@@ -4,6 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 import threading
 import time
+import os
 
 FOLDER = 'H:/learning_notes/project/kaggle/iMaterialist Challenge/'
 
@@ -12,7 +13,7 @@ def download_data(is_type = 'train'):
     time.sleep(0.5)
     images = pd.read_json(FOLDER + is_type + '.json')
     images['url'] = images['images'].apply(lambda x:x['url'][0])
-    images['name'] = images['url'].apply(lambda x:x.split('/')[-1])
+    images['name'] = images['url'].apply(lambda x:x.split('/')[-1])#按网址命名
     images['id'] = images['images'].apply(lambda x:x['image_id'])
     del images['images']
     if is_type == 'train':
@@ -20,7 +21,9 @@ def download_data(is_type = 'train'):
         del images['annotations']
         #images.to_csv(FOLDER + is_type + '_data.csv',index = False)#已经保存过了
         print('total num:%d' % images.shape[0])
-        for i,row in images[8000:].iterrows():
+        for i,row in images.iterrows():
+            if os.path.exists(FOLDER + is_type + '_image/' + row['name']):#如果这个文件已经存在了，就不需要重复下载了
+                continue       
             if i%10 == 0:
                 print('train %d' % i)
             try:
@@ -32,16 +35,20 @@ def download_data(is_type = 'train'):
         del images['annotations']
         #images.to_csv(FOLDER + is_type + '_data.csv',index = False)#已经保存过了
         print('total num:%d' % images.shape[0])
-        for i,row in images[5000:].iterrows():
+        for i,row in images.iterrows():
+            if os.path.exists(FOLDER + is_type + '_image/' + row['name']):
+                continue 
             if i%10 == 0:
-                print('test %d' % i)
+                print('validation %d' % i)
             try:
                 urllib.request.urlretrieve(row['url'],filename=FOLDER + is_type + '_image/' + row['name'])
             except:
                 pass
     else:
         print('total num:%d' % images.shape[0])
-        for i,row in images[3000:].iterrows():
+        for i,row in images.iterrows():
+            if os.path.exists(FOLDER + is_type + '_image/' + row['name']):
+                continue 
             if i%10 == 0:
                 print('test %d' % i)
             try:
