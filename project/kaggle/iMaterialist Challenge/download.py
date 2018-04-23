@@ -21,7 +21,7 @@ def download_data(is_type = 'train'):
         del images['annotations']
         #images.to_csv(FOLDER + is_type + '_data.csv',index = False)#已经保存过了
         print('total num:%d' % images.shape[0])
-        for i,row in images.iterrows():
+        for i,row in images[20000:].iterrows():
             if os.path.exists(DOWNLOAD_PATH + is_type + '_image/' + row['name']):#如果这个文件已经存在了，就不需要重复下载了
                 continue       
             if i%10 == 0:
@@ -35,7 +35,7 @@ def download_data(is_type = 'train'):
         del images['annotations']
         #images.to_csv(FOLDER + is_type + '_data.csv',index = False)#已经保存过了
         print('total num:%d' % images.shape[0])
-        for i,row in images.iterrows():
+        for i,row in images[::-1].iterrows():
             if os.path.exists(DOWNLOAD_PATH + is_type + '_image/' + row['name']):
                 continue 
             if i%10 == 0:
@@ -46,7 +46,7 @@ def download_data(is_type = 'train'):
                 print(e)
     else:
         print('total num:%d' % images.shape[0])
-        for i,row in images.iterrows():
+        for i,row in images[::-1].iterrows():
             if os.path.exists(DOWNLOAD_PATH + is_type + '_image/' + row['name']):
                 continue 
             if i%10 == 0:
