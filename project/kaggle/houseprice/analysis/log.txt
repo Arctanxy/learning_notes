@@ -1,0 +1,224 @@
+2017年12月7日15:04:52-----------------几乎未调参状况下
+--------------------------------------------------------------------------
+ElasticNetCV(alphas=[0.0001, 0.0005, 0.001, 0.01, 0.1, 1, 10], copy_X=True,
+       cv=None, eps=0.001, fit_intercept=True,
+       l1_ratio=[0.01, 0.1, 0.5, 0.9, 0.99], max_iter=5000, n_alphas=100,
+       n_jobs=1, normalize=False, positive=False, precompute='auto',
+       random_state=None, selection='cyclic', tol=0.0001, verbose=0)
+R2:0.9134892702334967
+RMSE:0.1095316609859541
+Test
+R2:0.8812968270501219
+RMSE:0.13108498873335248
+Accuracy:0.8840 (+/- 0.0677)
+GradientBoostingRegressor(alpha=0.9, criterion='friedman_mse', init=None,
+             learning_rate=0.05, loss='huber', max_depth=3,
+             max_features='sqrt', max_leaf_nodes=None,
+             min_impurity_decrease=0.0, min_impurity_split=None,
+             min_samples_leaf=15, min_samples_split=10,
+             min_weight_fraction_leaf=0.0, n_estimators=3000,
+             presort='auto', random_state=None, subsample=1.0, verbose=0,
+             warm_start=False)
+R2:0.9713094031092937
+RMSE:0.0656097680101528
+Test
+R2:0.8870421932090197
+RMSE:0.125825350551623
+Accuracy:0.9042 (+/- 0.0298)
+SVR(C=1.0, cache_size=200, coef0=0.0, degree=3, epsilon=0.1, gamma='auto',
+  kernel='rbf', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+R2:0.8318004645073088
+RMSE:0.14176248400939165
+Test
+R2:0.8494260110844928
+RMSE:0.13625665317700347
+Accuracy:0.8530 (+/- 0.0372)
+RandomForestRegressor(bootstrap=True, criterion='mse', max_depth=None,
+           max_features='auto', max_leaf_nodes=None,
+           min_impurity_decrease=0.0, min_impurity_split=None,
+           min_samples_leaf=1, min_samples_split=2,
+           min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+           oob_score=False, random_state=None, verbose=0, warm_start=False)
+R2:0.97108395211811
+RMSE:0.06423257414517791
+Test
+R2:0.8116743883047561
+RMSE:0.1593354182478997
+Accuracy:0.8517 (+/- 0.0177)
+------------------------------------------------------------------------------
+
+2017年12月7日15:11:20
+目前有两个模型表现较差（test数据测试效果<85%），可以用GridSearchCV进行自动调参，这
+里先选择手动调：
+RandomForest():
+    max_features——默认为Auto，即每棵树随机从所有特征值中选取特征值
+                    sqrt，每颗子树可以利用总特征数的平方根个
+                    0.2，设置为小数即每条决策树选取特征数量在此范围内
+                    增加max_features 能够增加randomforest的性能，但是也会降低
+                    Randomforest的各决策树之间的多样性，降低泛化能力
+    n_estimators——子树数量，一般来说，只要电脑能承受得住，越多越好
+    min_sample_leaf——叶子节点包含的最小样本数，根据实际情况而定，需要探索，因为此
+                    模型样本数量总共也就1459个，按sqrt采样一次也就38个样本，所以
+                    设置为3即可
+    max_features = sqrt,n_estimators = 3000,min_sample_leaf = 3
+SVR():
+    主要调节系数C和gamma
+    C——惩罚系数，如果噪点较多，需要将C设置小一点
+    gamma——RBF核函数参数，默认为1/样本特征数
+    C = 0.01,gamma = 0.01
+
+调参效果非常糟糕
+SVR(C=0.01, cache_size=200, coef0=0.0, degree=3, epsilon=0.1, gamma=0.01,
+  kernel='rbf', max_iter=-1, shrinking=True, tol=0.001, verbose=False)
+R2:-2.4560140068040015
+RMSE:0.2881597351601526
+Test
+R2:-2.3462999646655343
+RMSE:0.2839791988166791
+Accuracy:0.4761 (+/- 0.0335)
+RandomForestRegressor(bootstrap=True, criterion='mse', max_depth=None,
+           max_features='sqrt', max_leaf_nodes=None,
+           min_impurity_decrease=0.0, min_impurity_split=None,
+           min_samples_leaf=3, min_samples_split=2,
+           min_weight_fraction_leaf=0.0, n_estimators=3000, n_jobs=1,
+           oob_score=False, random_state=None, verbose=0, warm_start=False)
+R2:0.9032079403412393
+RMSE:0.10587739689380074
+Test
+R2:0.7990193886233364
+RMSE:0.14669449078815966
+Accuracy:0.8543 (+/- 0.0251)
+
+提交试试看结果如何——————果然非常差，0.15796
+
+SVR调参结果：C = 100,gamma = 0.01  Accuracy为0.87获得提升
+RandomForest调参结果：max_features = 0.2,n_estimators = 5000,min_samples_leaf = 5
+    Accuracy：0.8680 ， 略有提升
+--------------------------------------------------------------------------------
+2017年12月7日17:45:33
+加入了贝叶斯、K近邻、神经网络模型
+贝叶斯模型在无参数的情况下就有较好的表现
+
+--------------------------------------------------------------------------------
+2017年12月8日08:53:19
+使用GridSearchCV进行自动调参，看看会不会有更好的效果
+param_grid = {
+'max_features':[0.2,0.4,'sqrt','log2'],
+'n_estimators':[200,500],
+'min_samples_leaf':[2,3,5]
+}
+Accuracy = 0.8765
+Best params:{'max_features': 0.4, 'min_samples_leaf': 2, 'n_estimators': 200}
+-------------
+再次调参
+    parameter_sapce = {
+        "max_features":[0.6,0.4,0.5],
+        "n_estimators":[100,200,300],
+        "min_samples_leaf":[1,2],
+    }
+Best params:{'max_features': 0.4, 'min_samples_leaf': 1, 'n_estimators': 200}
+Accuracy = 0.8790
+
+KNN调参：
+    'algorithm':'atuo','n_neighbors':7,'weights':'distance','leaf_size':1
+    train  R2:1.0   test  R2:0.6999
+    Accuracy = 0.7510
+    明显过拟合
+-------------------------------------------------------------------------------
+2017年12月8日14:24:17  调参之后的模型
+ElasticNetCV(alphas=[0.0001, 0.0005, 0.001, 0.01, 0.1, 1, 10], copy_X=True,
+       cv=None, eps=0.001, fit_intercept=True,
+       l1_ratio=[0.01, 0.1, 0.5, 0.9, 0.99], max_iter=5000, n_alphas=100,
+       n_jobs=1, normalize=False, positive=False, precompute='auto',
+       random_state=None, selection='cyclic', tol=0.0001, verbose=0)
+R2:0.9134892702334967
+RMSE:0.1095316609859541
+Test
+R2:0.8812968270501219
+RMSE:0.13108498873335248
+Accuracy:0.8840 (+/- 0.0677)
+GradientBoostingRegressor(alpha=0.9, criterion='friedman_mse', init=None,
+             learning_rate=0.05, loss='huber', max_depth=3,
+             max_features='sqrt', max_leaf_nodes=None,
+             min_impurity_decrease=0.0, min_impurity_split=None,
+             min_samples_leaf=15, min_samples_split=10,
+             min_weight_fraction_leaf=0.0, n_estimators=5000,
+             presort='auto', random_state=None, subsample=1.0, verbose=0,
+             warm_start=False)
+R2:0.977470248098956
+RMSE:0.05829563694657057
+Test
+R2:0.8881193026775115
+RMSE:0.12584548945694948
+Accuracy:0.9029 (+/- 0.0319)
+Best params:{'C': 100, 'gamma': 0.001}
+GridSearchCV(cv=None, error_score='raise',
+       estimator=SVR(C=1.0, cache_size=200, coef0=0.0, degree=3, epsilon=0.1, gamma='auto',
+  kernel='rbf', max_iter=-1, shrinking=True, tol=0.001, verbose=False),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'C': [0.01, 0.1, 1, 10, 100], 'gamma': [0.0001, 0.001, 0.01, 0.1, 1, 10]},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+R2:0.9341574240729897
+RMSE:0.09885287019512694
+Test
+R2:0.8754564051281807
+RMSE:0.13702002697405294
+Accuracy:0.8657 (+/- 0.0762)
+Best params:{'max_features': 0.4, 'min_samples_leaf': 1, 'n_estimators': 200}
+GridSearchCV(cv=None, error_score='raise',
+       estimator=RandomForestRegressor(bootstrap=True, criterion='mse', max_depth=None,
+           max_features='auto', max_leaf_nodes=None,
+           min_impurity_decrease=0.0, min_impurity_split=None,
+           min_samples_leaf=1, min_samples_split=2,
+           min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,
+           oob_score=False, random_state=14, verbose=0, warm_start=False),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'max_features': [0.6, 0.4, 0.5], 'n_estimators': [100, 200, 300], 'min_samples_leaf': [1, 2]},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+R2:0.9812944831049076
+RMSE:0.051252405930788586
+Test
+R2:0.8479137659193028
+RMSE:0.139931508080286
+Accuracy:0.8790 (+/- 0.0173)
+BayesianRidge(alpha_1=1e-06, alpha_2=1e-06, compute_score=False, copy_X=True,
+       fit_intercept=True, lambda_1=1e-06, lambda_2=1e-06, n_iter=300,
+       normalize=False, tol=0.001, verbose=False)
+R2:0.933310987217429
+RMSE:0.09845590181641356
+Test
+R2:0.8686215140637797
+RMSE:0.14208416269028298
+Accuracy:0.8706 (+/- 0.0759)
+Best params:{'algorithm': 'auto', 'leaf_size': 1, 'n_neighbors': 7, 'weights': 'distance'}
+GridSearchCV(cv=None, error_score='raise',
+       estimator=KNeighborsRegressor(algorithm='auto', leaf_size=30, metric='minkowski',
+          metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+          weights='uniform'),
+       fit_params={}, iid=True, n_jobs=1,
+       param_grid={'n_neighbors': [5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 'algorithm': ['auto', 'ball_tree', 'kd_tree'], 'weights': ['uniform', 'distance'], 'leaf_size': [1, 2]},
+       pre_dispatch='2*n_jobs', refit=True, scoring=None, verbose=0)
+R2:1.0
+RMSE:0.0
+Test
+R2:0.6998928578573431
+RMSE:0.17689315247213477
+Accuracy:0.7520 (+/- 0.0146)
+MLPRegressor(activation='relu', alpha=0.0001, batch_size='auto', beta_1=0.9,
+       beta_2=0.999, early_stopping=False, epsilon=1e-08,
+       hidden_layer_sizes=(20, 20, 20), learning_rate='constant',
+       learning_rate_init=0.001, max_iter=200, momentum=0.9,
+       nesterovs_momentum=True, power_t=0.5, random_state=1, shuffle=True,
+       solver='lbfgs', tol=0.0001, validation_fraction=0.1, verbose=False,
+       warm_start=False)
+R2:0.9306537572090688
+RMSE:0.10200759362408254
+Test
+R2:0.8438405048546856
+RMSE:0.1580047934084545
+Accuracy:0.8554 (+/- 0.0741)
+
+
+
+--------------------------------------------------------------------------------
+对原始数据进行多值化（分层次）之后再拟合模型，也许能够提高模型原酸速度。
