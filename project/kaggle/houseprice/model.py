@@ -77,14 +77,16 @@ if __name__ == "__main__":
 
 
     las = Lasso(alpha=0.0005) # alpha值通过LassoCV()测试得到
-    xg = xgb.XGBRegressor(learning_rate=0.1,max_depth=2,n_estimators=500,reg_alpha=0.3,reg_lambda=0.6) # 通过GridSearchCV测试得到
+    xg = xgb.XGBRegressor(learning_rate=0.1,max_depth=2,n_estimators=500,reg_alpha=0.2,reg_lambda=0.4) # 通过GridSearchCV测试得到
     # rf = RandomForestRegressor()
     rf = RandomForestRegressor(criterion='mse',max_depth=11,max_features=0.5,min_samples_leaf=3,n_estimators=800,n_jobs=-1)
-    krr = KernelRidge(alpha = 1,degree=2,gamma=0.01,kernel='linear')
+    krr = KernelRidge(alpha = 0.1,degree=2,gamma=0.01,kernel='linear')
     rid = RidgeCV(alphas=[1e-4,1e-3,1e-2,0.1])
 
+
     # For xgboost
-    '''params = {
+    '''
+    params = {
         'learning_rate':[0.1],
         'max_depth':[2],
         'n_estimators':[500],
@@ -108,7 +110,7 @@ if __name__ == "__main__":
     params = {
         'alpha':[1e-4,1e-3,1e-2,0.1],
         'gamma':[1e-2,1e-3,0.1],
-        'kenel':['linear','laplacian','polynomial','sigmoid'],
+        'kernel':['linear','laplacian','polynomial','sigmoid'],
         'degree':[2,3],
     }
     search_model(krr,params,train_data)'''
@@ -119,7 +121,7 @@ if __name__ == "__main__":
     
     s = pd.DataFrame()
     s['Id'] = s1['Id']
-    s['SalePrice'] = (s1['SalePrice'] + s2['SalePrice'] + s3['SalePrice'])/3 # + s4['SalePrice'])/4
+    s['SalePrice'] = (2*s1['SalePrice'] + s2['SalePrice'] + s3['SalePrice'])/4 # + s4['SalePrice'])/4
     s.to_csv(PATH + 'my_submission.csv',index=False)
 
 

@@ -4,8 +4,8 @@ from scipy.stats import skew
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
-# PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
-PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
+PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
+# PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
 # PATH = '~/houseprice/data/' # For Linux
 
 def combine_time(df):
@@ -76,7 +76,9 @@ def manage(df):
     df['Functional'] = df['Functional'].fillna('Typ')
 
     # Utilities特征中除了两个np.nan 和一个"NoSeWa"外，全是"AllPub"，这种特征可以直接删去
-    df = df.drop(['Utilities'],axis=1)
+    # 删除无用列
+
+    df = df.drop(['Street','Utilities','Condition2','RoofMatl','Heating'],axis=1)
 
     # 再添加其他特征
     df['TotalSF'] = df['TotalBsmtSF'] + df['1stFlrSF'] + df['2ndFlrSF']
@@ -90,11 +92,13 @@ def manage(df):
     df["TotalArea"] = df[area_cols].sum(axis=1)
     # 参考 https://www.kaggle.com/thevachar/house-price-regression-and-feature-engineering
 
+   
+
     # 将类目型特征转化为标准化的离散数值变量
     cols = ['FireplaceQu', 'BsmtQual', 'BsmtCond', 'GarageQual', 'GarageCond', 
         'ExterQual', 'ExterCond','HeatingQC', 'PoolQC', 'KitchenQual', 'BsmtFinType1', 
         'BsmtFinType2', 'Functional', 'Fence', 'BsmtExposure', 'GarageFinish', 'LandSlope',
-        'LotShape', 'PavedDrive', 'Street', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond', 
+        'LotShape', 'PavedDrive', 'Alley', 'CentralAir', 'MSSubClass', 'OverallCond', 
         'YrSold', 'MoSold']
     print(cols)
     for c in cols:
@@ -122,6 +126,8 @@ def manage(df):
     print(df.info())
     df = pd.get_dummies(df)
     print(df.shape)
+
+    df = df.drop('MSZoning_C (all)',axis=1)
     return df
 
 def manage_outlier(df):
