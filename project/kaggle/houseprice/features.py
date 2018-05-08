@@ -4,8 +4,9 @@ from scipy.stats import skew
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
-PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
-# PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
+# 有三个path是因为我有三台电脑~~~
+# PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
+PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
 # PATH = '~/houseprice/data/' # For Linux
 
 def combine_time(df):
