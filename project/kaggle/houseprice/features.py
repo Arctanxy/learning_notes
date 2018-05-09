@@ -83,10 +83,10 @@ def manage(df):
 
     # 再添加其他特征
     df['TotalSF'] = df['TotalBsmtSF'] + df['1stFlrSF'] + df['2ndFlrSF']
-    df['Age'] = 2012 - df['YearBuilt']
+    df['Age'] = 2010 - df['YearBuilt']
     df['Remodeled'] = (df['YearBuilt'] != df['YearRemodAdd']) * 1
-    df['RecentRemodel'] = (df['YearBuilt'] == df['YearRemodAdd']) * 1
-    df['TimeSinceSold'] = 2012 - df['YrSold']
+    # df['RecentRemodel'] = (df['YearBuilt'] == df['YearRemodAdd']) * 1
+    df['TimeSinceSold'] = 2010 - df['YrSold']
     area_cols = ['LotFrontage', 'LotArea', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF',
              'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'GrLivArea', 'GarageArea', 'WoodDeckSF', 
              'OpenPorchSF', 'EnclosedPorch', '3SsnPorch', 'ScreenPorch', 'LowQualFinSF', 'PoolArea' ]
