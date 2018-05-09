@@ -13,6 +13,9 @@ import warnings
 warnings.filterwarnings("ignore") # 忽略warning，但是似乎没什么用
 
 
+raw_test = pd.read_csv(PATH + 'test.csv')
+AREA = raw_test['GrLivArea']
+
 def tr_te_split(data,test_size = 0.2):
     '''
     按月份进行数据划分
@@ -24,8 +27,10 @@ def tr_te_split(data,test_size = 0.2):
     y_tests = []
     for year in years:
         partial_data = data[data[year] == 1]
-        x = partial_data.drop(['SalePrice'],axis=1)
-        y = partial_data['SalePrice']
+        # x = partial_data.drop(['SalePrice'],axis=1)
+        # y = partial_data['SalePrice']
+        x = partial_data.drop(['AVG_PRICE'],axis=1)
+        y = partial_data['AVG_PRICE']
         x_tr,x_te,y_tr,y_te = train_test_split(x,y,test_size=test_size)
         x_trains.append(x_tr)
         x_tests.append(x_te)
@@ -71,8 +76,10 @@ def make_prediction(clf,x,y,x_test,test_data,train_data):
     y_pred = np.exp(clf.predict(x_test))
     submission = pd.DataFrame()
     submission['Id'] =  test_data['Id']
-    submission['SalePrice'] = y_pred
-    return submission
+    # submission['SalePrice'] = y_pred
+    submission['AVG_PRICE'] = y_pred
+    submission['SalePrice'] = submission['AVG_PRICE'] * AREA
+    return submission[['Id','SalePrice']]
 
 def search_model(clf,params,x,y):
     new_clf = GridSearchCV(clf,params,scoring='neg_mean_squared_error')
@@ -131,7 +138,7 @@ def build_model(x,y,test_data,k):
     
     s = pd.DataFrame()
     s['Id'] = s1['Id']
-    s['SalePrice'] = (2*s1['SalePrice'] + s2['SalePrice'] + s3['SalePrice'] + s4['SalePrice'])/5 # + s4['SalePrice'])/4
+    s['SalePrice'] = (2*s1['SalePrice'] + s2['SalePrice'] + s3['SalePrice'])/4 # + s4['SalePrice'])/5 # + s4['SalePrice'])/4
     s.to_csv(PATH + 'my_submission_%d.csv' % k,index=False)
     
     # 重新定义三个模型
@@ -153,7 +160,10 @@ def build_model(x,y,test_data,k):
     # 使用blend_model预测test
     y_pred = bm.predict(x_test)
     
-    s['SalePrice'] = y_pred
+    # s['SalePrice'] = y_pred
+    s['AVG_PRICE'] = y_pred
+    s['SalePrice'] = AREA * s['AVG_PRICE']
+    s = s[['Id','SalePrice']]
     s.to_csv(PATH + 'my_submission2_%d.csv' % k,index=False)
 
 
@@ -161,13 +171,15 @@ def build_model(x,y,test_data,k):
 if __name__ == "__main__":
     train_data = pd.read_csv(PATH + 'new_train.csv')
     train_data = train_data.drop(['SaleTime','Id'],axis=1)
-    x = train_data.drop(['SalePrice'],axis=1)
-    print(x.shape)
-    y = train_data['SalePrice'] # 这个y本身就是取过对数之后的y，所以不需要重复取对数
+
+    x = train_data.drop(['SalePrice','AVG_PRICE'],axis=1)
+    y = train_data['AVG_PRICE'] # 这个y本身就是取过对数之后的y，所以不需要重复取对数
     test_data = pd.read_csv(PATH + 'new_test.csv')
+    
+    print(AREA.isnull().sum())
 
     # 选取不同的特征，得到新的模型，事实证明，特征越多效果越好
-    for k in [100,150,200,240]:
+    for k in [240]:
         print("取前%d个元素" % k)
         build_model(x,y,test_data,k)
 

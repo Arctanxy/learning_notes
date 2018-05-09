@@ -5,8 +5,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from tqdm import tqdm
 # 有三个path是因为我有三台电脑~~~
-# PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
-PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
+PATH = 'H:/learning_notes/project/kaggle/houseprice/data/' # For Windows1
+# PATH = '~/Documents/Github/learning_notes/project/kaggle/houseprice/data/' # For Windows2
 # PATH = '~/houseprice/data/' # For Linux
 
 def combine_time(df):
@@ -33,12 +33,14 @@ def Add_reference_price(df,train_data):
         region = row['Neighborhood'] # 房屋所处区域
         neighbor = train_data[train_data['Neighborhood'] == region]
         if neighbor.shape[0] <= 3:
-            reference_price = neighbor['SalePrice'].mean()
+            # reference_price = neighbor['SalePrice'].mean()
+            reference_price = neighbor['AVG_PRICE'].mean()
             references.append(reference_price)
             continue
         neighbor['diff_time'] = neighbor['SaleTime'].apply(lambda x:(x-saletime).days) # 计算周边房屋与待评估房屋的销售时间差
         neighbor = neighbor.sort_values(by='diff_time')
-        reference_price = neighbor[:3]['SalePrice'].mean()
+        # reference_price = neighbor[:3]['SalePrice'].mean()
+        reference_price = neighbor[:3]['AVG_PRICE'].mean()
         references.append(reference_price)
     df['ReferencePrice'] = references
     return df
@@ -135,24 +137,27 @@ def manage_outlier(df):
     '''
     删除异常值，只针对train_data
     '''
-    df = df.drop(df[(df['GrLivArea'] > 4000) & (df['SalePrice']<300000)].index)
+    df = df.drop(df[(df['GrLivArea'] > 4000) & (df['SalePrice']<300000)].index) # 删掉了两个
     return df
 
 
 
 if __name__ == "__main__":
     train_data = pd.read_csv(PATH + 'train.csv')
+    train_data['AVG_PRICE'] = train_data['SalePrice']/train_data['GrLivArea'] # 要预测的当然是均价
     train_data = combine_time(train_data)
-    train_data['SalePrice'] = np.log(train_data['SalePrice'])
+    # train_data['SalePrice'] = np.log(train_data['SalePrice'])
+    train_data['AVG_PRICE'] = np.log(train_data['AVG_PRICE'])
     train_data = manage_outlier(train_data)
     print('train shape',train_data.shape) # 去除outlier之后的train大小，方便后面分割数据用
     test_data = pd.read_csv(PATH + 'test.csv')
     test_data = combine_time(test_data)
+
     house = pd.concat([train_data,test_data],axis=0)
     house = Add_reference_price(house,train_data)
     house = manage(house)
-    test = house[1456:]
-    train = house[:1456]
+    test = house[1458:]
+    train = house[:1458]
     test.to_csv(PATH + 'new_test.csv',index=False)
     train.to_csv(PATH + 'new_train.csv',index=False)
     print('train_null' ,train.SalePrice.isnull().sum())
