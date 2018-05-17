@@ -19,7 +19,11 @@ def check(x,y,clf=RidgeCV(alphas=[1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1]),cv=10):
 # 后向cv
 train_data = pd.read_csv(PATH + 'step_train.csv')
 test_data = pd.read_csv(PATH + 'step_test.csv')
+print(np.where(np.isnan(train_data)),'\n')
+print(np.where(np.isnan(test_data)))
 clf = RidgeCV(alphas=[1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1])
+tr_ids = train_data.Id
+te_ids = test_data.Id
 x = train_data.drop(['SalePrice','Id'],axis=1)
 y = np.log(train_data['SalePrice'])
 best_score = check(x,y)
@@ -34,7 +38,9 @@ for col in tqdm(x.columns):
     else:
         pass
 print(x.shape,best_score)
-x['SalePrice'] = y
-x.to_csv(PATH + 'selected_train.csv')
 test = test_data[x.columns]
-test.to_csv(PATH + 'selected_test.csv')
+x['SalePrice'] = y
+x['Id'] = tr_ids
+x.to_csv(PATH + 'selected_train.csv',index=False)
+test['Id'] = te_ids
+test.to_csv(PATH + 'selected_test.csv',index=False)

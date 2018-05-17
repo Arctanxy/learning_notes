@@ -55,8 +55,10 @@ def manage_data(data,train_data,test_data):
     # # 数据类型处理
     data[['YrSold','MoSold']] = data[['YrSold','MoSold']].astype(str)
     data['GarageYrBlt'] = data['GarageYrBlt'].astype(str)
-
+    ids = data['Id']
+    data = data.drop('Id',axis=1)
     data = pd.get_dummies(data)
+    data['Id'] = ids
     return data
 
 if __name__ == "__main__":
@@ -65,7 +67,8 @@ if __name__ == "__main__":
     test_data = data[data['SalePrice'].isnull()]
     train_data = data[~data['SalePrice'].isnull()]
     print(train_data.shape,test_data.shape)
-    test_data.to_csv(PATH + 'step_test.csv')
-    train_data.to_csv(PATH + 'step_train.csv')
+    test_data = test_data.drop('SalePrice',axis=1)
+    test_data.to_csv(PATH + 'step_test.csv',index=False)
+    train_data.to_csv(PATH + 'step_train.csv',index=False)
 
 
