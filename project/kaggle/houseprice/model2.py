@@ -13,9 +13,13 @@ from tqdm import tqdm
 import warnings
 warnings.filterwarnings("ignore") # 忽略warning，但是似乎没什么用
 
-def load_data():
-    test = pd.read_csv(PATH + 'selected_test.csv')
-    train = pd.read_csv(PATH + 'selected_train.csv')
+def load_data(method='backward'):
+    if method == 'backward':
+        test = pd.read_csv(PATH + 'selected_test.csv')
+        train = pd.read_csv(PATH + 'selected_train.csv')
+    else:
+        test = pd.read_csv(PATH + 'selected_test2.csv')
+        train = pd.read_csv(PATH + 'selected_train2.csv')
     x = train.drop(['SalePrice','Id'],axis=1)
     y = train['SalePrice']
     return test,x,y
@@ -72,6 +76,7 @@ class stack_model:
 
 if __name__ == "__main__":
     test,x,y = load_data()
+    raw_test = pd.read_csv(PATH + 'test.csv')  #原始数据中的GrLivArea字段已经被删掉了，￣□￣｜｜
     '''rid = search_model(Ridge(),x,y,params = {
         'alpha': [1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1],
         'fit_intercept': [True,False],
@@ -131,14 +136,17 @@ if __name__ == "__main__":
     krr = KernelRidge(alpha=1.0,degree=2,kernel='linear')
     gbd = GradientBoostingRegressor(criterion='mse',learning_rate=0.1,loss='huber',max_features='sqrt',n_estimators=400)
 
-    models = [rid,las,xg,rf,krr,gbd]
-    s_model = stack_model(models[:5],models[5])
+    # models = [rid,las,xg,rf,krr,gbd]
+    models = [rid,las,xg,krr,gbd]
+    s_model = stack_model(models[:len(models)-1],models[len(models)-1])
     for i in tqdm(range(len(models))):
         models[i].fit(x,y)
     y_predict = voting_predict(models,test)
-    submission = pd.DataFrame({'Id':test['Id'],'SalePrice':np.exp(y_predict)})
-    submission.to_csv(PATH + 'backward_result.csv',index=False)
+    submission = pd.DataFrame({'Id':test['Id'],'SalePrice':np.exp(y_predict) * raw_test['GrLivArea']})
+    # submission.to_csv(PATH + 'backward_result.csv',index=False)
+    submission.to_csv(PATH+'forward_result.csv',index=False)
     s_model.fit(x,y)
     y_predict2 = s_model.predict(test.drop('Id',axis=1))
-    submission2 = pd.DataFrame({'Id':test['Id'],'SalePrice':np.exp(y_predict2)})
-    submission2.to_csv(PATH + 'backward_result2.csv',index=False)
+    submission2 = pd.DataFrame({'Id':test['Id'],'SalePrice':np.exp(y_predict2)  * raw_test['GrLivArea']})
+    # submission2.to_csv(PATH + 'backward_result2.csv',index=False)
+    submission2.to_csv(PATH + 'forward_result2.csv',index=False)

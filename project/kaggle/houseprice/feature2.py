@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np 
 from tqdm import tqdm
 import warnings
+from features1 import Add_reference_price,combine_time
 warnings.filterwarnings("ignore")
 
 # 读取数据
@@ -12,8 +13,12 @@ warnings.filterwarnings("ignore")
 PATH = 'C:/Users/Dl/Documents/GitHub/learning_notes/project/kaggle/houseprice/data/'
 def load_data():
     train_data = pd.read_csv(PATH + 'train.csv')
+    train_data['AVG_PRICE'] = train_data['SalePrice']/train_data['GrLivArea'] # 价格使用每平方英尺的均价进行计算
     test_data = pd.read_csv(PATH + 'test.csv')
+    train_data = combine_time(train_data)
+    test_data = combine_time(test_data)
     data = pd.concat([train_data,test_data],axis=0)
+    data = Add_reference_price(data,train_data)
     return train_data,test_data,data
 
 def manage_data(data,train_data,test_data):
