@@ -5,12 +5,14 @@ import numpy as np
 from tqdm import tqdm
 import warnings
 from features1 import Add_reference_price,combine_time
+from scipy.stats import skew
+from sklearn.preprocessing import StandardScaler
 warnings.filterwarnings("ignore")
 
 # 读取数据
 
-# PATH = 'H:/learning_notes/project/kaggle/houseprice/data/'
-PATH = 'C:/Users/Dl/Documents/GitHub/learning_notes/project/kaggle/houseprice/data/'
+PATH = 'H:/learning_notes/project/kaggle/houseprice/data/'
+# PATH = 'C:/Users/Dl/Documents/GitHub/learning_notes/project/kaggle/houseprice/data/'
 def load_data():
     train_data = pd.read_csv(PATH + 'train.csv')
     train_data['AVG_PRICE'] = train_data['SalePrice']/train_data['GrLivArea'] # 价格使用每平方英尺的均价进行计算
@@ -24,9 +26,9 @@ def load_data():
 def manage_data(data,train_data,test_data):
 
     # 等级替换
-    data = data.replace({
+    '''data = data.replace({
         'Ex':5,'Gd':4,'TA':3,'Fa':2,'Po':1
-    })
+    })'''
     
     # 处理缺失值
         # 区域因素
@@ -62,6 +64,17 @@ def manage_data(data,train_data,test_data):
     data['GarageYrBlt'] = data['GarageYrBlt'].astype(str)
     ids = data['Id']
     data = data.drop('Id',axis=1)
+    # print('--nan--',np.where(np.isnan(data))) # 对于object类会报错
+    print(pd.isnull(data))
+    # 偏态数据处理
+    numeric_feats = data.drop(['AVG_PRICE','SalePrice'],axis=1).dtypes[(data.dtypes != 'object') & (data.dtypes != 'datetime64[ns]')].index # 获取数值列
+    '''skewed_feats = data[numeric_feats].apply(lambda x: skew(x))
+    skewed_feats = skewed_feats[skewed_feats > 0.75]
+    skewed_feats = skewed_feats.index'''
+    std = StandardScaler()
+    # data[skewed_feats] = std.fit_transform(data[skewed_feats])
+    data[numeric_feats] = std.fit_transform(data[numeric_feats])
+
     data = pd.get_dummies(data)
     data['Id'] = ids
     return data

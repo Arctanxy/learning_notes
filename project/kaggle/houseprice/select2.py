@@ -82,12 +82,13 @@ clf = RidgeCV(alphas=[1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1])
 tr_ids = train_data.Id
 te_ids = test_data.Id
 
-selected_index = forward_cv(train_data)
-test = test_data[selected_index]
+# selected_index = forward_cv(train_data)
+selected_index = backward_cv(train_data)
+test_data = test_data[selected_index]
 x = x[selected_index]
 
 x['SalePrice'] = y
 x['Id'] = tr_ids
 x.to_csv(PATH + 'selected_train2.csv',index=False)# 1为backward;2为forward
-test['Id'] = te_ids
-test.to_csv(PATH + 'selected_test2.csv',index=False)
+test_data['Id'] = te_ids
+test_data.to_csv(PATH + 'selected_test2.csv',index=False)
