@@ -5,14 +5,27 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import csv
+import csv,codecs 
 
 class InfluentPipeline(object):
 
-    def process_item(self, item, spider):
-        with open('D:/Modeling/ANHUI/HANSHANXIAN/items.csv','a',encoding='utf-8') as f:
+    def __init__(self):
+        self.f = open('D:/Modeling/ANHUI/HANSHANXIAN/items.csv','w',newline='',encoding='utf-8')
+        self.writer = csv.writer(self.f)
+        
+        self.writer.writerow((
+                'IS_TYPE','IS_NAME','COORDINATE','XZQHSZ_DM','ADDRESS'
+            ))
 
-            csv.writer(f).writerow((
-                'is_type','name','coord','district','address'
+    def process_item(self, item, spider):
+        
+        if item['name']:
+            self.writer.writerow((
+                item['is_type'],item['name'],
+                item['coord'],item['district'],
+                item['address']
             ))
         return item
+
+    def close_spider(self,spider):
+        self.f.close()
