@@ -27,6 +27,6 @@ class FundsItem(scrapy.Item):
     fromThisYear = scrapy.Field()   # 今年以来
     fromBuild = scrapy.Field()  # 成立以来
     serviceCharge = scrapy.Field()  # 手续费
-    upEnoughAmount = scrapy.Field()     # 起够金额
+    upEnoughAmount = scrapy.Field()     # 起购金额
 
     pass
