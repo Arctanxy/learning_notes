@@ -10,7 +10,7 @@ import csv,codecs
 class InfluentPipeline(object):
 
     def __init__(self):
-        self.f = open('D:/Modeling/ANHUI/HANSHANXIAN/items.csv','w',newline='',encoding='utf-8')
+        self.f = open('H:/learning_notes/study/scrapy_project/items.csv','w',newline='',encoding='utf-8')
         self.writer = csv.writer(self.f)
         
         self.writer.writerow((
