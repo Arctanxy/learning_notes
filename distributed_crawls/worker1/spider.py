@@ -27,7 +27,7 @@ class Spider():
         url_list = tree.xpath('//@href')
         for url in url_list:
             if 'http://' in url or 'https://' in url or '//' in url:
-                url = re.sub(r'https:\/\/|http:\/\/|\/\/','',url)
+                url = re.sub(r'https://|http://|//','',url)
                 # 只抓取帖子页面
                 if re.search(r'^/p/',url): # 帖子
                     url = self.domain + url
