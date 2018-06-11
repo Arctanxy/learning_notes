@@ -8,13 +8,17 @@ class InfluentSpider(scrapy.Spider):
     
     name = "influent"
     def __init__(self):
-        self.SITES = {
+        '''self.SITES = {
             '银行':'BANK','医院':'HOSPITAL','超市':'SUPERMARKET','商场':'SHOPPING',
             '景区':'SCENIC','公园':'PARK','学校':'SCHOOL','幼儿园':'KINDERGARDEN',
             '工厂':'FACTORY','酒店':'HOTEL','美食':'RESTAURANT'
+        }'''
+        self.SITES = {
+            '美食':'RESTAURANT'
         }
         # xzqhsz_dm = pd.read_excel('D:/Modeling/ANHUI/xzqhsz_dm.xlsx')
-        xzqhsz_dm = pd.read_excel('H:/learning_notes/study/scrapy_project/xzqhsz_dm.xlsx')
+        # xzqhsz_dm = pd.read_excel('H:/learning_notes/study/scrapy_project/xzqhsz_dm.xlsx')
+        xzqhsz_dm = pd.read_excel(r'C:\\Users\\Dl\\Documents\\GitHub\\learning_notes\\study\\scrapy_project\\xzqhsz_dm.xlsx')
         self.xzqhsz_dm = dict(zip(xzqhsz_dm['XZQH'].values,xzqhsz_dm['XZQHSZ_DM'].values))
         
     def gen_url(self):
@@ -63,7 +67,7 @@ class InfluentSpider(scrapy.Spider):
             for p in points:
                 urls.append(
                     'http://api.map.baidu.com/place/v2/search?query=%s&location=%s' \
-                    '&radius=1000&output=json&ak=f8QB8NM61oZ2j1FuotFa4z9PB9lUqRwE' % (k,p)
+                    '&radius=1000&output=json&scope=2&ak=f8QB8NM61oZ2j1FuotFa4z9PB9lUqRwE' % (k,p)
                 )                
         return urls
 
@@ -80,12 +84,42 @@ class InfluentSpider(scrapy.Spider):
         information = json.loads(response.body_as_unicode())['results']
         if information != []:
             for infor in information:
+                name = infor['name']
+                coordinate = str(infor['location']['lng']) +','+ str(infor['location']['lat'])
+                district = infor['area']
+                address = infor['address']
+
+                if infor['detail'] == 1:
+                    try:
+                        tag = infor['detail_info']['tag']
+                    except Exception as e:
+                        tag = ""
+                    try:
+                        is_type = infor['detail_info']['type']
+                    except Exception as e:
+                        is_type = ""
+
+                    try:
+                        rating = infor['detail_info']['overall_rating']
+                    except Exception as e:
+                        rating = ""
+                    try:
+                        comment_num = infor['detail_info']['comment_num']
+                    except Exception as e:
+                        comment_num = ""
+
+                else:
+                    tag,is_type,rating,comment_num = "","","",""
+                
                 yield {
                     'is_type':is_type,
-                    'name':infor['name'],
-                    'coord':str(infor['location']['lng'])+','+str(infor['location']['lat']),
-                    'district':self.xzqhsz_dm[infor['area']],
-                    'address':infor['address']
+                    'name':name,
+                    'coord':coordinate,
+                    'district':district,
+                    'address':address,
+                    'tag':tag,
+                    'rating':rating,
+                    'comment_num':comment_num
                 }
         else:
             pass

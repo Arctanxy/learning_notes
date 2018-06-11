@@ -15,3 +15,7 @@ class InfluentItem(scrapy.Item):
     coord = scrapy.Field()
     district = scrapy.Field()
     address = scrapy.Field()
+    tag = scrapy.Field()
+    is_type = scrapy.Field()
+    rating = scrapy.Field()
+    comment_num = scrapy.Field()
