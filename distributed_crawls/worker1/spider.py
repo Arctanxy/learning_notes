@@ -1,4 +1,5 @@
 from mysql_queue import MysqlQueue
+from mysql_storage import MysqlStorage
 import pymysql
 import requests
 from lxml import html
@@ -12,17 +13,26 @@ class Spider():
         self.path = 'D:/data/'
         self.iterr = 200
         self.domain = 'tieba.baidu.com'
+        self.storage = MysqlStorage()
         
     def extract_urls(self):
         '''
         从网页中提取所有网址并导入到数据库中
         '''
-        self.request_url()
+        self.url = self.que.pop()
         r = requests.get('http://' + self.url)
         r.encoding = 'utf-8'
         content = r.content # 使用text时会出现解码错误
-        # 将网页下载到本地
-        self.download(content)
+        # 将网页下载到本地，并将帖子名存入数据库中
+        if '/p/' in self.url:
+            self.download(content)
+            s = requests.get('https://' + self.url)
+            tr = html.fromstring(s.text)
+            titles = tr.xpath('//h1/@title')
+            if len(titles) > 0:
+                print(titles)
+                self.storage.insert(titles[0],quote(self.url))
+
         tree = html.fromstring(content)
         url_list = tree.xpath('//@href')
         for url in url_list:

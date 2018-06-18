@@ -18,10 +18,10 @@ GRID = {
 }
 
 class MysqlQueue:
-    def __init__(self,points,db_name="point_queue", table_name="points",conn=None):
+    def __init__(self,points,db_name="food_map", table_name="points",conn=None):
         self.db_name = db_name
         self.table_name = table_name
-        self.conn = pymysql.connect("localhost", "root", "123456", db_name) if conn is None else conn
+        self.conn = pymysql.connect("localhost", "worker1", "123456", db_name) if conn is None else conn
         self.cursor = self.conn.cursor()
         sql = """
                         CREATE TABLE IF NOT EXISTS %s (
@@ -61,9 +61,10 @@ class MysqlQueue:
             p = None
         return p
 
-
+# ttoYeqUv8PCDjdrdXQfLP7M7YcRnO1aQ	
+# f8QB8NM61oZ2j1FuotFa4z9PB9lUqRwE
 class baidu_spider:
-    def __init__(self,ak='f8QB8NM61oZ2j1FuotFa4z9PB9lUqRwE',keyword='美食',city='合肥',density=150,db_name = "point_queue",table_name = 'food_data',radius = 500,output = 'json',scope = 2,conn=None):
+    def __init__(self,ak='ttoYeqUv8PCDjdrdXQfLP7M7YcRnO1aQ',keyword='美食',city='合肥',density=150,db_name = "food_map",table_name = 'food_data',radius = 500,output = 'json',scope = 2,conn=None):
         self.ak = ak
         self.keyword = keyword
         self.city = city
@@ -71,7 +72,7 @@ class baidu_spider:
         self.radius = radius
         self.scope = scope
         self.output = output
-        self.conn = pymysql.connect("localhost", "root", "123456", db_name,charset='utf8') if conn is None else conn
+        self.conn = pymysql.connect("localhost", "worker1", "123456", db_name,charset='utf8') if conn is None else conn
         self.cursor = self.conn.cursor()
         sql = """
                                 CREATE TABLE IF NOT EXISTS %s (
@@ -112,6 +113,7 @@ class baidu_spider:
             url = 'http://api.map.baidu.com/place/v2/search?query=%s&location=%s' \
                     '&radius=%d&output=%s&scope=%s&ak=%s' % (self.keyword,p,self.radius,self.output,self.scope,self.ak)
             r = requests.get(url)
+            print(r.text)
             information = json.loads(r.text)['results']
             if information != []:
                 for infor in information:

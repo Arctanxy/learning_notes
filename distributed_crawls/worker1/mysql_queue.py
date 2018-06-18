@@ -1,5 +1,4 @@
 import pymysql
-from sqlalchemy import create_engine
 
 '''
 管理url队列
@@ -8,7 +7,7 @@ from sqlalchemy import create_engine
 class MysqlQueue():
     def __init__(self,conn = None):
         self.start_url = 'tieba.baidu.com/index.html'
-        self.conn = pymysql.connect(host = "192.168.89.66",port = 3306,user = "root",passwd = "123456",db = "celery") if conn is None else conn
+        self.conn = pymysql.connect(host = "192.168.1.5",port = 3306,user = "worker1",passwd = "123456",db = "spider",charset='utf8') if conn is None else conn
         self.cursor = self.conn.cursor()
         sql = """
                 CREATE TABLE IF NOT EXISTS DATA1 (
