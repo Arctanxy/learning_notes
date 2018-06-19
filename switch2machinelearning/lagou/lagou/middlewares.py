@@ -5,7 +5,15 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
+from scrapy import signals,log
+import random 
+from .settings import USER_AGENT_LIST
+
+class LagouUserAgentMiddleware(object):
+    def process_request(self,request,spider):
+        ua = random.choice(USER_AGENT_LIST)
+        if ua:
+            request.headers.setdefault('User-Agent',ua)
 
 
 class LagouSpiderMiddleware(object):

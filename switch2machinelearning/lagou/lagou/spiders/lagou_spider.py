@@ -19,16 +19,46 @@ class LagouSpider(scrapy.Spider):
             '太原','嘉兴','泰安','昆山',
             '烟台','兰州','泉州'
         ]
-        pass
+        self.headers = {
+            'Accept': 'application/json, text/javascript, */*; q=0.01',
+            'Accept-Encoding': 'gzip,deflate,br',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
+            'Connection': 'keep-alive',
+            'Content-Length': '55',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Host': 'www.lagou.com',
+            'Origin': 'https://www.lagou.com',
+            'X-Anit-Forge-Code': '0',
+            'X-Anit-Forge-Token': 'None',
+            'X-Requested-With': 'XMLHttpRequest',
+        }
 
     def start_requests(self):
         
         for city in self.citys:
-            data = {
-            'first':'true','pn':'1','kd':'机器学习','Referer':'Referer: https://www.lagou.com/jobs/list_%s?px=default&city=%s'%(quote('机器学习'),quote(city))
-            }
-            request_url = 'https://www.lagou.com/jobs/positionAjax.json?px=default&city=%s&needAddtionalResult=false' % city
-            yield scrapy.FormRequest(url=request_url,formdata = data,callback=self.parse)
+            for pn in range(30):
+                data = {
+                'first':'true','pn':'%d'% pn,'kd':'机器学习','Referer':'Referer: https://www.lagou.com/jobs/list_%s?px=default&city=%s'%(quote('机器学习'),quote(city))
+                }
+                request_url = 'https://www.lagou.com/jobs/positionAjax.json?px=default&city=%s&needAddtionalResult=false' % city
+                yield scrapy.FormRequest(url=request_url,formdata = data,headers = self.headers,callback=self.parse)
     
     def parse(self,response):
-        print(json.loads(response.body_as_unicode()))
+        data = json.loads(response.body_as_unicode())
+        position_data = data['content']['positionResult']['result']
+        for position in position_data:
+            """yield {
+                'company_Id':position['company_Id'],
+                companyFullName:position['companyFullName'],
+                companyLabelList:position['companyLabelList'],
+                companySize:position['companySize'],
+                position_Id:position['position_Id'],
+                education:position['education'],
+                financeStage:position['financeStage'],
+                firstType:position['firstType'],
+                hitags:position['hitags'],
+                industryField:position['industryField'],
+                city:position['city'],
+                
+            }"""
+            yield position
