@@ -59,10 +59,11 @@ def run():
         for pn in range(30):
             time.sleep(1+1.5*random.random())
             data = crawler(city=city,pn=(pn+1))
-            if data.shape[0] < 15:
-                break
             df = pd.concat([data,df],axis=0)
             print(df.shape)
+            if data.shape[0] < 15:
+                break
+            
     return df
 
 if __name__ == "__main__":
