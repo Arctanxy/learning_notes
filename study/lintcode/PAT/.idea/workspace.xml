@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d91aa81-6a62-4905-84be-3a040c9e8689" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/PAT_BASIC/A+B和C.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PAT_BASIC/数字分类.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PAT_BASIC/数素数.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PAT.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PAT.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PAT_BASIC/A除以B.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PAT_BASIC/部分A+B.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PAT_TOP/.idea/PAT_TOP.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PAT_TOP/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PAT_TOP/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PAT_TOP/LUCKY_STRING.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/PAT_BASIC/数素数.py" beforeDir="false" afterPath="$PROJECT_DIR$/PAT_BASIC/数素数.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,22 +17,22 @@
     <session id="1275037194">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="4" />
+          <entry key="py" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="4" />
+          <entry key="Python" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1829" />
+          <entry key="py" value="2758" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1829" />
+          <entry key="Python" value="2758" />
         </counts>
       </usages-collector>
     </session>
@@ -48,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/PAT_BASIC/A+B和C.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
               <folding>
                 <marker date="1530525853104" expanded="true" signature="10:15" ph="..." />
               </folding>
@@ -59,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PAT_BASIC/数字分类.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="15" column="24" lean-forward="true" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+            <state relative-caret-position="225">
+              <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
               <folding>
                 <marker date="1530532189938" expanded="true" signature="10:15" ph="..." />
               </folding>
@@ -68,24 +63,38 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PAT_BASIC/数素数.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+            <state relative-caret-position="495">
+              <caret line="33" column="28" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
               <folding>
-                <element signature="e#0#21#0" expanded="true" />
-                <marker date="1530539740860" expanded="true" signature="44:45" ph="..." />
+                <marker date="1530710697316" expanded="true" signature="22:27" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://H:/ProgramData/Anaconda3/Lib/site-packages/colorama/ansitowin32.py">
+        <entry file="file://$PROJECT_DIR$/PAT_BASIC/部分A+B.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="240">
+              <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+              <folding>
+                <marker date="1530711352459" expanded="true" signature="20:25" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/PAT_BASIC/A除以B.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <marker date="1530711805271" expanded="true" signature="10:15" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -115,10 +124,12 @@
         <option value="$PROJECT_DIR$/PAT_BASIC/A+B和C.py" />
         <option value="$PROJECT_DIR$/PAT_BASIC/数字分类.py" />
         <option value="$PROJECT_DIR$/PAT_BASIC/数素数.py" />
+        <option value="$PROJECT_DIR$/PAT_BASIC/部分A+B.py" />
+        <option value="$PROJECT_DIR$/PAT_BASIC/A除以B.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="x" value="960" />
     <option name="width" value="960" />
     <option name="height" value="1040" />
@@ -129,6 +140,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -145,9 +157,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -166,7 +177,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.数素数">
+  <component name="RunManager" selected="Python.A除以B">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -290,19 +301,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="3n+1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="A除以B" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PAT" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="D:\ProgramData\Anaconda3\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PAT_BASIC" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PAT_BASIC/3n+1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PAT_BASIC/A除以B.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -311,19 +322,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="A+B Format" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="部分A+B" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PAT" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="D:\ProgramData\Anaconda3\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PAT_ADVANCED" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PAT_BASIC" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PAT_ADVANCED/A+B Format.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PAT_BASIC/部分A+B.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -353,20 +364,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="数素数" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="PAT" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/PAT_BASIC" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/PAT_BASIC/数素数.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Python.3n+1" />
-      <item itemvalue="Python.A+B Format" />
       <item itemvalue="Python.A+B和C" />
       <item itemvalue="Python.数字分类" />
       <item itemvalue="Python.数素数" />
+      <item itemvalue="Python.部分A+B" />
+      <item itemvalue="Python.A除以B" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.A除以B" />
+        <item itemvalue="Python.部分A+B" />
         <item itemvalue="Python.数素数" />
         <item itemvalue="Python.数字分类" />
         <item itemvalue="Python.A+B和C" />
-        <item itemvalue="Python.A+B Format" />
-        <item itemvalue="Python.3n+1" />
       </list>
     </recent_temporary>
   </component>
@@ -384,27 +416,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="960" y="0" width="960" height="1040" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10906217" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22451194" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32321042" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991323" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3222958" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39845476" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -424,38 +456,38 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
           <line>13</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
-          <line>9</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
-          <line>11</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
-          <line>15</line>
-          <option name="timeStamp" value="5" />
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
           <line>17</line>
-          <option name="timeStamp" value="7" />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
+          <line>15</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
           <line>22</line>
-          <option name="timeStamp" value="8" />
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
+          <line>25</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/PAT_BASIC/数素数.py</url>
+          <line>30</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -478,7 +510,7 @@
     <entry file="file://$PROJECT_DIR$/PAT_BASIC/A+B和C.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <marker date="1530525853104" expanded="true" signature="10:15" ph="..." />
           </folding>
@@ -487,8 +519,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PAT_BASIC/数字分类.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="24" lean-forward="true" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+        <state relative-caret-position="225">
+          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
           <folding>
             <marker date="1530532189938" expanded="true" signature="10:15" ph="..." />
           </folding>
@@ -502,13 +534,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://H:/ProgramData/Anaconda3/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="322" selection-start-line="322" selection-end-line="322" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PAT_BASIC/数素数.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="14" lean-forward="true" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        <state relative-caret-position="495">
+          <caret line="33" column="28" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1530539740860" expanded="true" signature="44:45" ph="..." />
+            <marker date="1530710697316" expanded="true" signature="22:27" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PAT_BASIC/部分A+B.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="9" lean-forward="true" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
+          <folding>
+            <marker date="1530711352459" expanded="true" signature="20:25" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PAT_BASIC/A除以B.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <marker date="1530711805271" expanded="true" signature="10:15" ph="..." />
           </folding>
         </state>
       </provider>
