@@ -138,6 +138,7 @@ def tune_and_evaluate(tuning_opt):
     print("Tuning...")
     tune_kernels(tasks, **tuning_opt)
     print("Saving graph...")
+    # 保存计算图前要确定graph_opt_sch_file为空文件
     tune_graph(mod['main'], data_shape, log_file, graph_opt_sch_file)
 
     with autotvm.apply_graph_best(graph_opt_sch_file):
