@@ -250,6 +250,12 @@ def to_tvm(clock = False):
 	intrp = relay.build_module.create_executor('graph',mod,tvm.cpu(0),target)
 	tvm_out = intrp.evaluate()(tvm.nd.array(x.astype(dtype)), **params)
 	
+	if clock:
+		a = time.time()
+		for i in range(10):
+			tvm_out = intrp.evaluate()(tvm.nd.array(x.astype(dtype)), **params)
+		print("tvm inference cost time: {}".format((time.time() - a) / 10))
+
 	for item in tvm_out:
 		print(item.shape)
 
@@ -261,7 +267,6 @@ def to_tvm(clock = False):
 	np.testing.assert_allclose(tvm_out[0].asnumpy(), onnx_out[0], rtol=1e-03, atol=1e-05)
 	np.testing.assert_allclose(tvm_out[1].asnumpy(), onnx_out[1], rtol=1e-03, atol=1e-05)
 	print("Exported model has been tested with ONNXRuntime, and the result looks good!")
-
 
 if __name__ == '__main__':
 	import sys
@@ -276,6 +281,5 @@ if __name__ == '__main__':
 		to_onnx(clock = True)
 		to_tvm(clock = True)
 	else:
-		raise Exception("arg not acceptable")
-
+		raise Exception("Wrong args")
 
